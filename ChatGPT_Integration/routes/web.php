@@ -1,18 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\OpenAiController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
+});
+Route::get('login',[UserController::class,'view_login']);
+Route::post('check_login',[UserController::class,'check_login']);
+
+Route::group(['middleware' => 'auth:sanctum'],function(){
+    Route::get('chat_page',[UserController::class,'chat_page']);
+    Route::get('user',[UserController::class,'userDetails']);
+    Route::post('chat_gpt',[OpenAiController::class,'index']);
+    Route::get('logout',[UserController::class,'logout']);
 });

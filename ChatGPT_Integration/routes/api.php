@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\OpenAiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +18,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+})->name('user');
+
+Route::get('login',[UserController::class,'view_login']);
+
+Route::get('chat_gpt',[OpenAiController::class,'index']);
+Route::post('check_login',[UserController::class,'check_login']);
+
+Route::group(['middleware' => 'auth:sanctum'],function(){
+    Route::get('user',[UserController::class,'userDetails']);
+    Route::get('chat_gpt',[OpenAiController::class,'index']);
+    Route::get('logout',[UserController::class,'logout']);
 });
